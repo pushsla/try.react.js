@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskContainer from "./datatypes/TaskContainer";
 import {TaskContainerContext} from "./contexts/TaskContainerContext";
-import Task from "./datatypes/Task";
+import Task, {TaskPropsPartial} from "./datatypes/Task";
 import Menu from "./components/Menu/Menu";
 import Graph from "./components/Graph/Graph";
 
@@ -9,7 +9,7 @@ import "./App.sass";
 
 class App extends React.Component{
   addTask = (task: Task) => {
-    const newtasks = Object.assign(new TaskContainer("null"), this.state.tasks);
+    const newtasks = this.state.context.tasks;
     newtasks.addTask(task);
 
     this.setState({
@@ -18,7 +18,7 @@ class App extends React.Component{
   }
 
   removeTask = (id: number) => {
-    const newtasks = Object.assign(new TaskContainer("null"), this.state.tasks);
+    const newtasks = this.state.context.tasks;
     newtasks.removeTask(id);
 
     this.setState({
@@ -26,16 +26,28 @@ class App extends React.Component{
     });
   }
 
+  setTaskProps = (id: number, props: TaskPropsPartial) => {
+    const newtasks = this.state.context.tasks;
+    newtasks.setTaskProps(id, props);
+
+    this.setState({
+      tasks: newtasks
+    });
+  }
+
   state = {
-    tasks: new TaskContainer("Tasks"),
-    addTask: this.addTask,
-    removeTask: this.removeTask
+    context: {
+      tasks: new TaskContainer("Tasks"),
+      addTask: this.addTask,
+      removeTask: this.removeTask,
+      setTaskProps: this.setTaskProps,
+    }
   }
 
   render()
   {
     return (
-        <TaskContainerContext.Provider value={this.state}>
+        <TaskContainerContext.Provider value={this.state.context}>
           <main className="App">
             <Menu/>
             <Graph/>

@@ -1,6 +1,23 @@
 
+export interface TaskProps{
+    id: number,
+    startTime: number,
+    stopTime: number,
+    taskName: string,
+    taskColor: string,
+    taskFinished: boolean,
+}
+
+export interface TaskPropsPartial{
+    startTime?: number,
+    stopTime?: number,
+    taskName?: string,
+    taskColor?: string,
+    taskFinished?: boolean,
+}
+
 export default class Task{
-    state: {id: number, startTime: number, stopTime: number, taskName: string, taskColor: string, taskFinished: boolean};
+    state: TaskProps;
 
     constructor(start_time: number, stop_time: number, name: string, color: string){
         this.state = {

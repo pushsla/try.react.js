@@ -1,22 +1,27 @@
 import React from "react";
 
 import "./Entry.sass";
+import Task from "../../datatypes/Task";
 
 export interface EntryProps{
-    color: string,
-    name: string,
-    children: React.ReactNode
+    task: Task,
+    onColorClick?: any,
+    children: React.ReactNode,
 }
 
-export default function Entry({color, name, children}: EntryProps){
+export default function Entry({task, onColorClick, children}: EntryProps){
     const entryStyle = {
-        background: color
+        background: task.state.taskColor
+    }
+
+    const onButtonColorClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onColorClick && onColorClick(e);
     }
 
     return(
         <div className="Menu__Entry">
-            <button className="Entry__color" style={entryStyle}> </button>
-            <span className="Entry__name">{name}</span>
+            <button className="Entry__color" onClick={onButtonColorClick} style={entryStyle}> </button>
+            <span className="Entry__name">{task.state.taskName}</span>
             {children}
         </div>
     );
